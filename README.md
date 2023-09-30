@@ -1,4 +1,3 @@
-
 # Feedback Tracker for Change Management Initiatives
 
 Feedback Tracker is a web-based platform built to capture feedback on change management initiatives and use AI-powered sentiment analysis to understand the sentiment behind the feedback. It's built with Flask and SQLite for the backend, and simple HTML and CSS for the frontend.
@@ -6,9 +5,7 @@ Feedback Tracker is a web-based platform built to capture feedback on change man
 ## Features
 
 - **Feedback Collection**: Users can easily submit feedback through a textarea on the main page.
-  
 - **Sentiment Analysis**: Leveraging AI, the system analyzes and categorizes feedback sentiment as positive, neutral, or negative.
-  
 - **Feedback Display**: All feedback, along with its derived sentiment, is displayed below the submission box in a simple list format.
 
 ## Setup and Running the Project
@@ -20,12 +17,11 @@ Ensure you have the following installed:
 - Python 3.7+
 - Flask
 - Flask_SQLAlchemy
-- transformers (if you choose to use the advanced sentiment analysis model)
 
 ### Installation
 
 1. **Clone the Repository**:
-   
+
    ```bash
    git clone [YOUR REPOSITORY LINK HERE]
    cd [YOUR DIRECTORY NAME]
@@ -41,7 +37,7 @@ Ensure you have the following installed:
 3. **Install the Dependencies**:
 
    ```bash
-   pip install Flask Flask_SQLAlchemy textblob transformers 
+   pip install Flask Flask_SQLAlchemy textblob
    ```
 
 4. **Initialize the Database**:
