@@ -1,15 +1,13 @@
+from datetime import timedelta
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from functools import wraps
+from os import path
+from socket import gethostname
 from textblob import TextBlob
 from wordcloud import WordCloud, STOPWORDS
-import matplotlib.pyplot as plt
 import pandas as pd
-from os import path
-import os
 import sqlite3
-from functools import wraps
-from textblob import TextBlob
-from datetime import timedelta
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///feedbacks.db"
@@ -177,5 +175,5 @@ if __name__ == "__main__":
             employee = User(username="employee", password="123456", role="Employee")
             db.session.add(hr)
             db.session.add(employee)
-            db.session.commit()
-    app.run(debug=True)
+            db.session.commit()      
+        app.run(debug=True)
