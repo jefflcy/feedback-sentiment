@@ -9,9 +9,10 @@
     <body>
           <div id="mySidenav" class="sidenav">
             <img class="navLogo" src="../static/images/PSA-logo.png" />
-            <a href="#">Initiatives</a>
+            <a href="{{ url_for('index')}}">Initiatives</a>
             <a href="#">Profile</a>
-            <a href="#">Contact Us</a>
+            <a href="{{ url_for('add_initiative')}}">Add Initiaive</a>
+            {% if logged_in %} <a href="{{ url_for('logout')}}">Logout</a> {% endif %}
           </div>
 
         <div class="main-body">
@@ -28,7 +29,12 @@
             </div>
             <div class="cardList">
 
+                {% if not logged_in %}
+                    <a href="{{ url_for('login') }}"> Please login here.</a>
+                {% endif %}
+
                 {% for initiative in initiatives %}
+
                 <div class="card">
                     <div class="card-body">
                         <div class="card-heading-1">

@@ -106,7 +106,10 @@ def logout():
 def index():
     initiatives = Initiative.query.all()
     initiatives.reverse()
-    return render_template("index.html", initiatives=initiatives)
+    logged_in = "user_id" in session
+    if not logged_in:
+        initiatives = []
+    return render_template("index.html", initiatives=initiatives, logged_in=logged_in)
 
 
 def login_required(f):
