@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
 from textblob import TextBlob
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
@@ -16,6 +17,7 @@ db = SQLAlchemy(app)
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    initiative_id = db.Column(db.Integer, ForeignKey('initiative.id'), nullable=False)
     content = db.Column(db.String(1000), nullable=False)
     department = db.Column(db.String(100), nullable=False)
     sentiment = db.Column(db.String(10), nullable=True)
@@ -24,12 +26,12 @@ class Feedback(db.Model):
 class Initiative(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
-    feedbacks = db.relationship("Feedback", back_populates="initiative")
 
 
-def wordcloud():
+def wordcloud(initiative_id):
+    sql_query = "SELECT content FROM feedback WHERE initiative_id=" + str(initiative_id)
     cnx = sqlite3.connect('instance/feedbacks.db')
-    df = pd.read_sql_query("SELECT content FROM feedback", cnx)
+    df = pd.read_sql_query(sql_query, cnx)
  
     comment_words = ''
     stopwords = set(STOPWORDS)
@@ -54,7 +56,7 @@ def wordcloud():
                     stopwords = stopwords,
                     min_font_size = 10).generate(comment_words)
     
-    wordcloud.to_file('images/test.jpg')
+    wordcloud.to_file('static/images/' + str(initiative_id) + '.jpg')
 
 
 @app.route("/")
@@ -87,11 +89,11 @@ def submit_feedback(initiative_id):
     else:
         sentiment = "negative"
 
-    new_feedback = Feedback(content=content, department='0', sentiment=sentiment)
+    new_feedback = Feedback(initiative_id=initiative_id, content=content, department='0', sentiment=sentiment)
     db.session.add(new_feedback)
     db.session.commit()
 
-    wordcloud()
+    wordcloud(initiative_id)
     flash("Feedback submitted successfully!", "success")
     return redirect(url_for("feedback_page", initiative_id=initiative_id))
 
