@@ -1,20 +1,13 @@
-from flask import (
-    Flask,
-    render_template,
-    request,
-    redirect,
-    url_for,
-    flash,
-    jsonify,
-    session,
-)
+from flask import Flask, render_template, request, session, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from textblob import TextBlob
+from datetime import timedelta
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///feedbacks.db"
 app.config["SECRET_KEY"] = "some_secret_key"
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=7)
 db = SQLAlchemy(app)
 
 
@@ -46,19 +39,22 @@ class User(db.Model):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    error = None
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+        username = request.form["username"]
+        password = request.form["password"]
+        user = User.query.filter_by(username=username).first()
 
-        user = User.query.filter_by(username=username, password=password).first()
-
-        if user:  # if got user
-            session["user_id"] = user.id
+        if user and user.password == password:
+            session["logged_in"] = True
+            session["username"] = user.username
             session["role"] = user.role
+            session["user_id"] = user.id  # Storing the user's ID in the session
             return redirect(url_for("index"))
         else:
-            flash("Invalid credentials", "danger")
-    return render_template("login.html")
+            error = "Invalid credentials. Please try again."
+
+    return render_template("login.html", error=error)
 
 
 @app.route("/logout")
@@ -95,6 +91,7 @@ def add_initiative():
 
 
 @app.route("/submit_feedback/<int:initiative_id>", methods=["POST"])
+@login_required
 def submit_feedback(initiative_id):
     content = request.form.get("content")
 
@@ -108,7 +105,10 @@ def submit_feedback(initiative_id):
         sentiment = "negative"
 
     new_feedback = Feedback(
-        sentiment=sentiment, content=content, initiative_id=initiative_id
+        sentiment=sentiment,
+        content=content,
+        initiative_id=initiative_id,
+        user_id=session["user_id"],
     )
     db.session.add(new_feedback)
     db.session.commit()
