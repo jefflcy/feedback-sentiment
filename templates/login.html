@@ -6,26 +6,22 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     </head>
 <body>
-    <div class="container">
-        <h1>Login</h1>
-        <!-- Updated form action and method -->
-        <form id="loginForm" action="{{ url_for('login') }}" method="post">
-            <div>
-                <!-- Changed from email to username -->
-                <label for="username">Username:</label>
-                <input type="text" name="username" id="username" required>
-            </div>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" name="password" id="password" required>
-            </div>
-            <!-- Removed the onclick attribute -->
-            <button class="submit-btn" type="submit">Login</button>
-        </form>
-        <!-- Use Flask's flash mechanism for error messages -->
-        {% if error %}
-        <div style="color: red;">{{ error }}</div>
-        {% endif %}
-    </div>
+  <div class="center">
+    <h1>Login</h1>
+    <form id="loginForm" action="{{ url_for('login') }}" method="post">
+      <div class="input-group">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required>
+      </div>
+      <div class="input-group">
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required>
+      </div>
+      <button class="submit-btn" type="submit">Login</button>
+    </form>
+    {% if error %}
+      <div style="color: red;">{{ error }}</div>
+    {% endif %}
+  </div>
 </body>
 </html>
