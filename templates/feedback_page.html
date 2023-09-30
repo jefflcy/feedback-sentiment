@@ -20,7 +20,7 @@
             <h2>All Feedbacks</h2>
             <ul>
             {% for feedback in feedbacks %}
-                <li>{{ feedback.content }} | Sentiment: {{ feedback.sentiment }}</li>
+                <li>{{ feedback.content }} | Sentiment: {{ feedback.sentiment }} | Submitted by: {{ feedback.user.username }}</li>
             {% endfor %}
             </ul>
 
