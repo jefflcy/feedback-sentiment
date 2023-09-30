@@ -1,0 +1,28 @@
+<!-- feedback_page.html -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Feedback Tracker</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    
+    <body>
+        <div class="container">
+            <h1>Feedback for {{ initiative.name }}</h1>
+
+            <form action="{{ url_for('submit_feedback', initiative_id=initiative.id) }}" method="post">
+                <textarea name="content" rows="4" cols="50" placeholder="Enter your feedback here..." required></textarea>
+                <input type="submit" value="Submit Feedback">
+            </form>
+
+            <h2>All Feedbacks</h2>
+            <ul>
+            {% for feedback in feedbacks %}
+                <li>{{ feedback.content }} | Sentiment: {{ feedback.sentiment }}</li>
+            {% endfor %}
+            </ul>
+
+            <a href="{{ url_for('index') }}">Back to Initiatives</a>
+        </div>
+    </body>
+</html>
