@@ -41,7 +41,7 @@ Ensure you have the following installed:
 3. **Install the Dependencies**:
 
    ```bash
-   pip install Flask Flask_SQLAlchemy transformers
+   pip install Flask Flask_SQLAlchemy textblob transformers 
    ```
 
 4. **Initialize the Database**:
