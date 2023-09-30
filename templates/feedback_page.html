@@ -17,12 +17,19 @@
                 <input class="submit-btn" type="submit" value="Submit Feedback">
             </form>
 
-            <h2>All Feedbacks</h2>
+            <h2>Feedbacks</h2>
             <ul>
             {% for feedback in feedbacks %}
                 <li>{{ feedback.content }} | Sentiment: {{ feedback.sentiment }} | Submitted by: {{ feedback.user.username }}</li>
             {% endfor %}
             </ul>
+
+            <h2>Word Cloud</h2>
+
+            <img src="{{ url_for('static', filename = 'images/'+initiative.id|string+'.jpg') }}"
+             onerror="this.onerror=null;this.src='/static/imgs/default.jpg'" height=30% width=30%/>
+
+            <br>
 
             <a class="a-back" href="{{ url_for('index') }}">Back to Initiatives</a>
 

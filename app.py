@@ -1,8 +1,13 @@
+from datetime import timedelta
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
+from os import path
+from socket import gethostname
 from textblob import TextBlob
-from datetime import timedelta
+from wordcloud import WordCloud, STOPWORDS
+import pandas as pd
+import sqlite3
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///feedbacks.db"
@@ -13,20 +18,17 @@ db = SQLAlchemy(app)
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.String(500), nullable=False)
     sentiment = db.Column(db.String(50), nullable=True)
-    initiative_id = db.Column(db.Integer, db.ForeignKey("initiative.id"))
+    initiative_id = db.Column(db.Integer, db.ForeignKey("initiative.id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-
     initiative = db.relationship("Initiative", back_populates="feedbacks")
 
 
 class Initiative(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
-
     feedbacks = db.relationship("Feedback", back_populates="initiative")
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -35,6 +37,37 @@ class User(db.Model):
     role = db.Column(db.String(50), nullable=False)
 
     feedbacks = db.relationship("Feedback", backref="user", lazy=True)
+
+
+def wordcloud(initiative_id):
+    sql_query = "SELECT content FROM feedback WHERE initiative_id=" + str(initiative_id)
+    cnx = sqlite3.connect('instance/feedbacks.db')
+    df = pd.read_sql_query(sql_query, cnx)
+ 
+    comment_words = ''
+    stopwords = set(STOPWORDS)
+    
+    # iterate through the csv file
+    for val in df.content:
+        
+        # typecaste each val to string
+        val = str(val)
+    
+        # split the value
+        tokens = val.split()
+        
+        # Converts each token into lowercase
+        for i in range(len(tokens)):
+            tokens[i] = tokens[i].lower()
+        
+        comment_words += " ".join(tokens)+" "
+    
+    wordcloud = WordCloud(width = 800, height = 800,
+                    background_color ='white',
+                    stopwords = stopwords,
+                    min_font_size = 10).generate(comment_words)
+    
+    wordcloud.to_file('static/images/' + str(initiative_id) + '.jpg')
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -112,6 +145,8 @@ def submit_feedback(initiative_id):
     )
     db.session.add(new_feedback)
     db.session.commit()
+
+    wordcloud(initiative_id)
     flash("Feedback submitted successfully!", "success")
     return redirect(url_for("feedback_page", initiative_id=initiative_id))
 
@@ -140,5 +175,5 @@ if __name__ == "__main__":
             employee = User(username="employee", password="123456", role="Employee")
             db.session.add(hr)
             db.session.add(employee)
-            db.session.commit()
-    app.run(debug=True)
+            db.session.commit()      
+        app.run(debug=True)

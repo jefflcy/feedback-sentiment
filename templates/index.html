@@ -12,7 +12,7 @@
             <ul>
             {% for initiative in initiatives %}
                 <li >
-                    <a class = "initiative" href="{{ url_for('feedback_page', initiative_id=initiative.id) }}">
+                    <a class="initiative" href="{{ url_for('feedback_page', initiative_id=initiative.id) }}">
                         {{ initiative.name }}
                     </a>
                 </li>
