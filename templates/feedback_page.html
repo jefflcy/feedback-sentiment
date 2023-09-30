@@ -3,16 +3,18 @@
 <html>
     <head>
         <title>Feedback Tracker</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap">
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
     </head>
     
     <body>
         <div class="container">
-            <h1>Feedback for {{ initiative.name }}</h1>
+            <h1>Feedback for <span class="initiative-name">{{ initiative.name }}</span></h1>
 
             <form action="{{ url_for('submit_feedback', initiative_id=initiative.id) }}" method="post">
                 <textarea name="content" rows="4" cols="50" placeholder="Enter your feedback here..." required></textarea>
-                <input type="submit" value="Submit Feedback">
+                <input class="submit-btn" type="submit" value="Submit Feedback">
             </form>
 
             <h2>All Feedbacks</h2>
@@ -22,7 +24,9 @@
             {% endfor %}
             </ul>
 
-            <a href="{{ url_for('index') }}">Back to Initiatives</a>
+            <a class="a-back" href="{{ url_for('index') }}">Back to Initiatives</a>
+
+    
         </div>
     </body>
 </html>

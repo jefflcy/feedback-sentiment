@@ -12,7 +12,7 @@ button {
 }
 
 body {
-  font-family: "Arial", sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: #f5f7fa;
   color: #333;
 }
@@ -76,12 +76,85 @@ li {
 }
 
 a {
-  color: #007bff;
+  color: #000000;
   text-decoration: none;
+}
+
+.a-back {
+  color: #007bff;
   margin-top: 20px;
+  text-decoration: underline;
   display: inline-block;
 }
 
-a:hover {
-  text-decoration: underline;
+.input-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+input[type="text"]:hover {
+  border-color: #007bff;
+}
+
+.submit-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.initiative {
+  text-decoration: none;
+  display: block;
+}
+
+.initiative:hover {
+  text-decoration: none;
+}
+
+.add-initiative-link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.add-initiative-link:hover {
+  background-color: #0056b3;
+  text-decoration: none;
+}
+
+.initiative-name {
+  color: #1b5f26;
 }
