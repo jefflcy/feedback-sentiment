@@ -7,19 +7,89 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     
     <body>
-        <div class="container">
-            <h1>Initiatives</h1>
-            <ul>
-            {% for initiative in initiatives %}
-                <li >
-                    <a class="initiative" href="{{ url_for('feedback_page', initiative_id=initiative.id) }}">
-                        {{ initiative.name }}
-                    </a>
-                </li>
-            {% endfor %}
-            </ul>
-            <a class="add-initiative-link" href="{{ url_for('add_initiative') }}">+ Add New Initiative</a>
-        </div>
+          <div id="mySidenav" class="sidenav">
+            <img class="navLogo" src="../static/images/PSA-logo.png" />
+            <a href="#">Initiatives</a>
+            <a href="#">Profile</a>
+            <a href="#">Contact Us</a>
+          </div>
+
+        <div class="main-body">
+            <div class="header-body">
+                    <div class="header-text">
+                        <p class="header-heading">OUR INITIATIVES</p>
+                        <p>Help Shape PSA’s Future</p>
+                    </div>
+                    <div class="search-container">
+                        <form action="/action_page.php">
+                          <input class="searchContainer" placeholder="Search.." name="search">
+                        </form>
+                    </div>
+            </div>
+            <div class="cardList">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-heading-1">
+                            <h1>
+                                Hybrid Work Policy
+                            </h1>
+                            <div class="outerProgress">
+                                <div class="innerProgress" style="width: 40%"></div>
+                            </div>
+                        </div>
+                        <p>
+                            Blending office and remote work to support your collaboration needs.
+                        </p>
+                    </div>
+                    <div class="card-button">
+                        <button class="cardbutton">
+                            <img src="https://i.ibb.co/CW5Wvry/buttonpng.png" class="buttonpng" border="0" />
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-heading-1">
+                            <h1>
+                                Hybrid Work Policy
+                            </h1>
+                            <div class="outerProgress">
+                                <div class="innerProgress" style="width: 40%"></div>
+                            </div>
+                        </div>
+                        <p>
+                            Blending office and remote work to support your collaboration needs.
+                        </p>
+                    </div>
+                    <div class="card-button">
+                        <button class="cardbutton">
+                            <img src="https://i.ibb.co/CW5Wvry/buttonpng.png" class="buttonpng" border="0" />
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-heading-1">
+                            <h1>
+                                Hybrid Work Policy
+                            </h1>
+                            <div class="outerProgress">
+                                <div class="innerProgress" style="width: 40%"></div>
+                            </div>
+                        </div>
+                        <p>
+                            Blending office and remote work to support your collaboration needs.
+                        </p>
+                    </div>
+                    <div class="card-button">
+                        <button class="cardbutton">
+                            <img src="https://i.ibb.co/CW5Wvry/buttonpng.png" class="buttonpng" border="0" />
+                        </button>
+                    </div>
+                </div>
+             </div>
+       </div>
     </body>
 </html>
-
