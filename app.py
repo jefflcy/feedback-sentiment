@@ -30,13 +30,14 @@ class Feedback(db.Model):
 class Initiative(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
-
+    feedbacks = db.relationship("Feedback", back_populates="initiative")
 
 class User(db.Model):
-    username = db.Column(db.String(50), primary_key=True)
-    password = db.Column(db.String(50), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(120), nullable=False)
     role = db.Column(db.String(50), nullable=False)
-    department = db.Column(db.String(50), nullable=False)
+
     feedbacks = db.relationship("Feedback", backref="user", lazy=True)
 
 
@@ -143,8 +144,7 @@ def submit_feedback(initiative_id):
         content=content,
         initiative_id=initiative_id,
         user_id=session["user_id"],
-    )    
-    
+    )
     db.session.add(new_feedback)
     db.session.commit()
 
