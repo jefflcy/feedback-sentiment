@@ -20,7 +20,9 @@ class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(500), nullable=False)
     sentiment = db.Column(db.String(50), nullable=True)
-    initiative_id = db.Column(db.Integer, db.ForeignKey("initiative.id"), nullable=False)
+    initiative_id = db.Column(
+        db.Integer, db.ForeignKey("initiative.id"), nullable=False
+    )
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     initiative = db.relationship("Initiative", back_populates="feedbacks")
 
@@ -28,7 +30,9 @@ class Feedback(db.Model):
 class Initiative(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
+    dsc = db.Column(db.String(500), nullable=False)
     feedbacks = db.relationship("Feedback", back_populates="initiative")
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -41,33 +45,35 @@ class User(db.Model):
 
 def wordcloud(initiative_id):
     sql_query = "SELECT content FROM feedback WHERE initiative_id=" + str(initiative_id)
-    cnx = sqlite3.connect('instance/feedbacks.db')
+    cnx = sqlite3.connect("instance/feedbacks.db")
     df = pd.read_sql_query(sql_query, cnx)
- 
-    comment_words = ''
+
+    comment_words = ""
     stopwords = set(STOPWORDS)
-    
+
     # iterate through the csv file
     for val in df.content:
-        
         # typecaste each val to string
         val = str(val)
-    
+
         # split the value
         tokens = val.split()
-        
+
         # Converts each token into lowercase
         for i in range(len(tokens)):
             tokens[i] = tokens[i].lower()
-        
-        comment_words += " ".join(tokens)+" "
-    
-    wordcloud = WordCloud(width = 800, height = 800,
-                    background_color ='white',
-                    stopwords = stopwords,
-                    min_font_size = 10).generate(comment_words)
-    
-    wordcloud.to_file('static/images/' + str(initiative_id) + '.jpg')
+
+        comment_words += " ".join(tokens) + " "
+
+    wordcloud = WordCloud(
+        width=800,
+        height=800,
+        background_color="white",
+        stopwords=stopwords,
+        min_font_size=10,
+    ).generate(comment_words)
+
+    wordcloud.to_file("static/images/" + str(initiative_id) + ".jpg")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -99,6 +105,7 @@ def logout():
 @app.route("/")
 def index():
     initiatives = Initiative.query.all()
+    initiatives.reverse()
     return render_template("index.html", initiatives=initiatives)
 
 
@@ -113,10 +120,17 @@ def login_required(f):
 
 
 @app.route("/add_initiative", methods=["GET", "POST"])
+@login_required
 def add_initiative():
+    # Check if the logged-in user is 'hr'
+    if session["role"] != "HR":
+        flash("Unauthorized! Only HR can add initiatives.", "danger")
+        return redirect(url_for("index"))
+
     if request.method == "POST":
         name = request.form.get("name")
-        new_initiative = Initiative(name=name)
+        dsc = request.form.get("dsc")
+        new_initiative = Initiative(name=name, dsc=dsc)
         db.session.add(new_initiative)
         db.session.commit()
         return redirect(url_for("index"))
@@ -175,5 +189,5 @@ if __name__ == "__main__":
             employee = User(username="employee", password="123456", role="Employee")
             db.session.add(hr)
             db.session.add(employee)
-            db.session.commit()      
+            db.session.commit()
         app.run(debug=True)

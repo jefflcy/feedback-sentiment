@@ -28,7 +28,7 @@ body {
   background-color: #ffffff;
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   border-radius: 5px;*/
-  background: linear-gradient(120deg, #4e878e, #EDF4F5);
+  background: linear-gradient(120deg, #4e878e, #edf4f5);
   color: #333;
   height: 100vh;
 }
@@ -46,7 +46,9 @@ body {
   box-sizing: border-box; /* Ensures padding is included in the width */
 }
 
-input[type="text"], input[type="password"], .submit-btn {
+input[type="text"],
+input[type="password"],
+.submit-btn {
   width: calc(100% - 20px); /* Adjusted width for consistent sizing */
   padding: 10px;
   border: 1px solid #ddd;
@@ -58,7 +60,7 @@ input[type="text"], input[type="password"], .submit-btn {
 
 .submit-btn {
   margin-top: 20px; /* Added margin between the text fields and the submit button */
-  background-color: #6D8F99;
+  background-color: #6d8f99;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -71,8 +73,6 @@ input[type="text"], input[type="password"], .submit-btn {
 .submit-btn:hover {
   background-color: #2e4949;
 }
-
-/* Your other styles below this point */
 
 h1 {
   font-size: 24px;
@@ -193,31 +193,28 @@ input[type="text"]:hover {
   color: #1b5f26;
 }
 
-
 /*DO NOT TOUCH*/
 
-.card-heading-1{
+.card-heading-1 {
   display: flex;
   flex-direction: column;
 }
 
-
-.card-body{
+.card-body {
   width: 80%;
   padding-left: 30px;
 }
 
-.card-heading-1{
+.card-heading-1 {
   display: flex;
   flex-direction: row;
 }
 
-.card-button{
+.card-button {
   max-width: 30%;
-
 }
 
-.cardbutton{
+.cardbutton {
   background-color: #fff;
 }
 
@@ -225,14 +222,13 @@ input[type="text"]:hover {
   background-color: #fff;
 }
 
-.buttonpng{
+.buttonpng {
   width: 80px;
   height: 80px;
 }
 
-
-.card{
-  margin:10px;
+.card {
+  margin: 10px;
   padding: 15px;
   display: flex;
   flex-direction: row;
@@ -263,15 +259,15 @@ input[type="text"]:hover {
   transition: 0.3s;
 }
 
-.main-body{
- width: 100%;
+.main-body {
+  width: 100%;
 }
 
 .sidenav a:hover {
   color: #f1f1f1;
 }
 
-.header-body{
+.header-body {
   background-color: #fff;
   height: 15%;
   padding-top: 30px;
@@ -281,29 +277,29 @@ input[type="text"]:hover {
   justify-content: space-between;
 }
 
-.header-text{
+.header-text {
   padding-left: 30px;
 }
 
-.header-heading{
+.header-heading {
   font-size: 1.75rem;
   font-weight: bold;
 }
 
-.searchContainer{
+.searchContainer {
   width: 250px;
   border-radius: 20px;
   height: 40px;
   padding-left: 15px;
 }
 
-.cardList{
+.cardList {
   display: flex;
   flex-direction: column;
   width: inherit;
   padding: 30px;
 }
-.outerProgress{
+.outerProgress {
   margin-left: 20px;
   margin-top: 10px;
   background-color: red;
@@ -311,13 +307,13 @@ input[type="text"]:hover {
   height: 20px;
   border-radius: 50px;
 }
-.innerProgress{
+.innerProgress {
   background-color: #1b5f26;
   height: inherit;
   border-radius: 50px;
 }
 
-.navLogo{
+.navLogo {
   height: 120px;
   width: 268px;
   padding-left: 15px;

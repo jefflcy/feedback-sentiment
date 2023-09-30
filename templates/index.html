@@ -27,69 +27,31 @@
                     </div>
             </div>
             <div class="cardList">
+
+                {% for initiative in initiatives %}
                 <div class="card">
                     <div class="card-body">
                         <div class="card-heading-1">
                             <h1>
-                                Hybrid Work Policy
+                                {{ initiative.name }}
                             </h1>
                             <div class="outerProgress">
                                 <div class="innerProgress" style="width: 40%"></div>
                             </div>
                         </div>
                         <p>
-                            Blending office and remote work to support your collaboration needs.
+                            {{ initiative.dsc }}
                         </p>
                     </div>
                     <div class="card-button">
                         <button class="cardbutton">
-                            <img src="https://i.ibb.co/CW5Wvry/buttonpng.png" class="buttonpng" border="0" />
+                            <img src="https://www.svgrepo.com/show/384725/pointer-right.svg" class="buttonpng" border="0" />
                         </button>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-heading-1">
-                            <h1>
-                                Hybrid Work Policy
-                            </h1>
-                            <div class="outerProgress">
-                                <div class="innerProgress" style="width: 40%"></div>
-                            </div>
-                        </div>
-                        <p>
-                            Blending office and remote work to support your collaboration needs.
-                        </p>
-                    </div>
-                    <div class="card-button">
-                        <button class="cardbutton">
-                            <img src="https://i.ibb.co/CW5Wvry/buttonpng.png" class="buttonpng" border="0" />
-                        </button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-heading-1">
-                            <h1>
-                                Hybrid Work Policy
-                            </h1>
-                            <div class="outerProgress">
-                                <div class="innerProgress" style="width: 40%"></div>
-                            </div>
-                        </div>
-                        <p>
-                            Blending office and remote work to support your collaboration needs.
-                        </p>
-                    </div>
-                    <div class="card-button">
-                        <button class="cardbutton">
-                            <img src="https://i.ibb.co/CW5Wvry/buttonpng.png" class="buttonpng" border="0" />
-                        </button>
-                    </div>
-                </div>
-             </div>
+                {% endfor %}
+            </div>
        </div>
     </body>
 </html>
