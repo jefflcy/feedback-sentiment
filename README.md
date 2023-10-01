@@ -4,9 +4,9 @@ iFeel is a web-based platform built to capture feedback on change management ini
 
 ## Features
 
-- **Feedback Collection**: Users can easily submit feedback through a form on the main page.
+- **Feedback Collection**: Users can easily submit feedback for an initiative through a form on the main page.
 - **Sentiment Analysis**: Leveraging AI, the system analyzes and categorizes feedback sentiment as positive, neutral, or negative.
-- **Feedback Display**: All feedback, along with its derived sentiment, is displayed below the submission box in a simple list format.
+- **Feedback Display**: All feedback, along with its derived sentiment, is displayed below the submission box in a simple list format. A word cloud of the most frequent words is also displayed.
 
 ## Setup and Running the Project
 
