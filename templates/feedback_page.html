@@ -1,53 +1,165 @@
 <!-- feedback_page.html -->
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Feedback Tracker</title>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap">
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <head>
+    <title>Feedback Tracker</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
 
-    </head>
-    
-
-    
-    <body>
-
-        {% if role == "Employee" %}
-
-            <!-- FEEDBACK CARD -->
-
-        {% endif %}
-
-        {% if role == "HR" %}
-
-        <div class="container">
-            <h1>Feedback for <span class="initiative-name">{{ initiative.name }}</span></h1>
-
-            <form action="{{ url_for('submit_feedback', initiative_id=initiative.id) }}" method="post">
-                <textarea name="content" rows="4" cols="50" placeholder="Enter your feedback here..." required></textarea>
-                <input class="submit-btn" type="submit" value="Submit Feedback">
-            </form>
-
-            <h2>Feedbacks</h2>
-            <ul>
-            {% for feedback in feedbacks %}
-                <li>{{ feedback.content }} | Sentiment: {{ feedback.sentiment }} | Submitted by: {{ feedback.user.username }}</li>
-            {% endfor %}
-            </ul>
-
-            <h2>Word Cloud</h2>
-
-            <img src="{{ url_for('static', filename = 'images/'+initiative.id|string+'.jpg') }}"
-             onerror="this.onerror=null;this.src='/static/imgs/default.jpg'" height=30% width=30%/>
-
-            <br>
-
-            {% endif %}
-
-            
-            <a class="a-back" href="{{ url_for('index') }}">Back to Initiatives</a>
-
-    
+  <body>
+    {% if role == "Employee" %}
+    <div>
+      <div class="feedback-header-body">
+        <div class="feedback-header-text">
+          <a href="{{ url_for('index') }}">
+            <i class="fa fa-regular fa-chevron-left"></i>
+            Home
+          </a>
         </div>
-    </body>
+      </div>
+
+      <div class="feedback-main-body">
+        <h1>
+          Feedback for
+          <span>{{ initiative.name }}</span>
+          Policy
+        </h1>
+      </div>
+
+      <div>
+        <form
+          action="{{ url_for('submit_feedback', initiative_id=initiative.id) }}"
+          method="post"
+        >
+          <textarea
+            class="feedbackContainer"
+            name="content"
+            rows="4"
+            cols="50"
+            placeholder="Enter your feedback here!"
+            required
+          ></textarea>
+          <input class="feedback-submit-btn" type="submit" value="Submit" />
+        </form>
+      </div>
+
+      <div class="all-feedbacks">
+        <h2>All Your Feedbacks</h2>
+
+        <div class="feedback-cardList">
+          {% for feedback in feedbacks %}
+
+          <div class="feedback-card">
+            <div class="feedback-card-body">
+              {{ feedback.content }} | Sentiment: {{ feedback.sentiment }} |
+              Submitted by: {{ feedback.user.username }}
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="wordcloud">
+        <h2>Word Cloud</h2>
+        <div class="wordcloud-main-body">
+          <img
+            src="{{ url_for('static', filename = 'images/'+initiative.id|string+'.jpg') }}"
+            onerror="this.onerror=null;this.src='/static/imgs/default.jpg'"
+            height="30%"
+            width="30%"
+          />
+          <br />
+        </div>
+      </div>
+    </div>
+
+    {% endif %} {% if role == "HR" %}
+
+    <div>
+      <div class="feedback-header-body">
+        <div class="feedback-header-text">
+          <a href="{{ url_for('index') }}">
+            <i class="fa fa-regular fa-chevron-left"></i>
+            Home
+          </a>
+        </div>
+      </div>
+
+      <div class="feedback-main-body">
+        <h1>
+          Feedback for
+          <span>{{ initiative.name }}</span>
+          Policy
+        </h1>
+      </div>
+
+      <div class="all-charts">
+        <div class="overall-charts">
+          <div class="chart-card1"></div>
+
+          <div class="smaller-charts">
+            <div class="chart-card2"></div>
+            <div class="chart-card2"></div>
+          </div>
+        </div>
+
+        <div class="chart-card"></div>
+
+        <div class="overall-charts">
+          <div class="chart-card3"></div>
+          <div class="chart-card3"></div>
+          <div class="chart-card3"></div>
+          <div class="chart-card3"></div>
+        </div>
+      </div>
+
+      <div class="all-feedbacks">
+        <h2>Most Insightful</h2>
+
+        <!--HAVE NOT ADDED IF CONDITION FOR FEEDBACK SCORE-->
+        <div class="feedback-cardList">
+          {% for feedback in feedbacks %}
+          <div class="insightful-card">
+            {{ feedback.content }}
+            <div class="insightful-card-body">
+              <p>Sentiment: {{ feedback.sentiment }}</p>
+              <p>Submitted by: {{ feedback.user.username }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="all-feedbacks">
+        <h2>All Your Feedbacks</h2>
+
+        <div class="feedback-cardList">
+          {% for feedback in feedbacks %}
+
+          <div class="feedback-card">
+            <div class="feedback-card-body">
+              {{ feedback.content }} | Sentiment: {{ feedback.sentiment }} |
+              Submitted by: {{ feedback.user.username }}
+            </div>
+          </div>
+
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {% endif %}
+  </body>
 </html>

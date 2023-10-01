@@ -7,6 +7,7 @@ from socket import gethostname
 from wordcloud import WordCloud, STOPWORDS
 import pandas as pd
 import sqlite3
+from textblob import TextBlob
 
 ################################# CONFIG #################################
 
