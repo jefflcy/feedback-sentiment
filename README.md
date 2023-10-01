@@ -2,6 +2,9 @@
 
 iFeel is a web-based platform built to capture feedback on change management initiatives and use AI-powered sentiment analysis to understand the sentiment behind the feedback. It's built with Flask and SQLite for the backend, and HTML and CSS for the frontend.
 
+## Link to Video
+(https://youtu.be/va4piMkxBlA)
+
 ## Features
 
 - **Feedback Collection**: Users can easily submit feedback for an initiative through a form on the main page.
