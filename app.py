@@ -4,16 +4,19 @@ from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 from os import path
 from socket import gethostname
-from textblob import TextBlob
 from wordcloud import WordCloud, STOPWORDS
 import pandas as pd
 import sqlite3
+
+################################# CONFIG #################################
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///feedbacks.db"
 app.config["SECRET_KEY"] = "some_secret_key"
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=7)
 db = SQLAlchemy(app)
+
+################################# MODELS #################################
 
 
 class Feedback(db.Model):
@@ -41,6 +44,9 @@ class User(db.Model):
     role = db.Column(db.String(50), nullable=False)
 
     feedbacks = db.relationship("Feedback", backref="user", lazy=True)
+
+
+################################# HELPER FUNCTIONS #################################
 
 
 def wordcloud(initiative_id):
@@ -76,8 +82,40 @@ def wordcloud(initiative_id):
     wordcloud.to_file("static/images/" + str(initiative_id) + ".jpg")
 
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("login", next=request.url))
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+################################# PAGES #################################
+
+
+@app.route("/")
+def index():
+    initiatives = Initiative.query.all()
+    initiatives.reverse()
+    logged_in = "user_id" in session
+    if not logged_in:
+        initiatives = []
+        role = False
+    else:
+        role = session["role"]
+    return render_template(
+        "index.html", initiatives=initiatives, logged_in=logged_in, role=role
+    )
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    logged_in = "user_id" in session
+    if logged_in:
+        return redirect(url_for("index"))
+
     error = None
     if request.method == "POST":
         username = request.form["username"]
@@ -99,27 +137,7 @@ def login():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("login"))
-
-
-@app.route("/")
-def index():
-    initiatives = Initiative.query.all()
-    initiatives.reverse()
-    logged_in = "user_id" in session
-    if not logged_in:
-        initiatives = []
-    return render_template("index.html", initiatives=initiatives, logged_in=logged_in)
-
-
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if "user_id" not in session:
-            return redirect(url_for("login", next=request.url))
-        return f(*args, **kwargs)
-
-    return decorated_function
+    return redirect(url_for("index"))
 
 
 @app.route("/add_initiative", methods=["GET", "POST"])
@@ -138,6 +156,19 @@ def add_initiative():
         db.session.commit()
         return redirect(url_for("index"))
     return render_template("add_initiative.html")
+
+
+@app.route("/initiative/<int:initiative_id>")
+@login_required
+def feedback_page(initiative_id):
+    initiative = Initiative.query.get_or_404(initiative_id)
+    feedbacks = Feedback.query.filter_by(initiative_id=initiative.id).all()
+    return render_template(
+        "feedback_page.html",
+        feedbacks=feedbacks,
+        initiative=initiative,
+        user_role=session["role"],
+    )
 
 
 @app.route("/submit_feedback/<int:initiative_id>", methods=["POST"])
@@ -166,19 +197,6 @@ def submit_feedback(initiative_id):
     wordcloud(initiative_id)
     flash("Feedback submitted successfully!", "success")
     return redirect(url_for("feedback_page", initiative_id=initiative_id))
-
-
-@app.route("/initiative/<int:initiative_id>")
-@login_required
-def feedback_page(initiative_id):
-    initiative = Initiative.query.get_or_404(initiative_id)
-    feedbacks = Feedback.query.filter_by(initiative_id=initiative.id).all()
-    return render_template(
-        "feedback_page.html",
-        feedbacks=feedbacks,
-        initiative=initiative,
-        user_role=session["role"],
-    )
 
 
 if __name__ == "__main__":

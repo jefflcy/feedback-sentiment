@@ -11,7 +11,7 @@
             <img class="navLogo" src="../static/images/PSA-logo.png" />
             <a href="{{ url_for('index')}}">Initiatives</a>
             <a href="#">Profile</a>
-            <a href="{{ url_for('add_initiative')}}">Add Initiaive</a>
+            {% if logged_in and role == "HR" %}<a href="{{ url_for('add_initiative')}}">Add Initiaive</a> {% endif %}
             {% if logged_in %} <a href="{{ url_for('logout')}}">Logout</a> {% endif %}
           </div>
 
