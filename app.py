@@ -7,6 +7,7 @@ from socket import gethostname
 from wordcloud import WordCloud, STOPWORDS
 import pandas as pd
 import sqlite3
+from transformers import pipeline
 
 ################################# CONFIG #################################
 
@@ -176,14 +177,15 @@ def feedback_page(initiative_id):
 def submit_feedback(initiative_id):
     content = request.form.get("content")
 
-    # Analyze the sentiment using TextBlob
-    analysis = TextBlob(content)
-    if analysis.sentiment.polarity > 0:
+    # Analyze the sentiment of the feedback.
+    sentiment_pipeline = pipeline(model="distilbert-base-uncased-finetuned-sst-2-english")
+    analysis = sentiment_pipeline([content])[0]
+    if (analysis.get("label") == 'POSITIVE' and analysis.get("score") > 0.6):
         sentiment = "positive"
-    elif analysis.sentiment.polarity == 0:
-        sentiment = "neutral"
-    else:
+    elif (analysis.get("label") == 'NEGATIVE' and analysis.get("score") > 0.6):
         sentiment = "negative"
+    else:
+        sentiment = "neutral"
 
     new_feedback = Feedback(
         sentiment=sentiment,

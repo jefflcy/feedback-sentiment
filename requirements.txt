@@ -1,6 +1,5 @@
 Flask>=2.0.1
 flask_sqlalchemy==3.1.1
-matplotlib==3.8.0
 pandas==2.1.1
-textblob==0.17.1
+transformers==4.33.3
 wordcloud==1.9.2
