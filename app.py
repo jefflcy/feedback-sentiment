@@ -8,6 +8,7 @@ from wordcloud import WordCloud, STOPWORDS
 import pandas as pd
 import sqlite3
 from transformers import pipeline
+from pychartjs import BaseChart, ChartType, Options, Color
 
 ################################# CONFIG #################################
 
@@ -23,7 +24,8 @@ db = SQLAlchemy(app)
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(500), nullable=False)
-    sentiment = db.Column(db.String(50), nullable=True)
+    sentiment = db.Column(db.String(50), nullable=False)
+    sentiment_score = db.Column(db.Float, nullable=False)
     initiative_id = db.Column(
         db.Integer, db.ForeignKey("initiative.id"), nullable=False
     )
@@ -159,6 +161,45 @@ def add_initiative():
     return render_template("add_initiative.html")
 
 
+"""
+
+CHART IMPLEMENTATION
+
+
+class SentimentPieChart(BaseChart):
+    type = ChartType.Pie
+
+    def __init__(self, sentiment_counts, title):
+        super().__init__()
+        self.sentiment_counts = sentiment_counts
+        self.title = title
+
+    def get_datasdets(self, **kwargs):
+        data = list(self.sentiment_counts.values())
+        return [
+            {
+                "data": data,
+                "backgroundColor": [
+                    Color(75, 192, 192),
+                    Color(255, 205, 86),
+                    Color(255, 99, 132),
+                ],
+            },
+        ]
+
+    def get_labels(self, **kwargs):
+        return list(self.sentiment_counts.keys())
+
+    def get_options(self, **kwargs):
+        return Options(
+            title={
+                "display": True,
+                "text": self.title,
+            }
+        )
+"""
+
+
 @app.route("/initiative/<int:initiative_id>")
 @login_required
 def feedback_page(initiative_id):
@@ -177,18 +218,24 @@ def feedback_page(initiative_id):
 def submit_feedback(initiative_id):
     content = request.form.get("content")
 
-    # Analyze the sentiment of the feedback.
-    sentiment_pipeline = pipeline(model="distilbert-base-uncased-finetuned-sst-2-english")
+    # Analyze the sentiment using TextBlob
+    sentiment_pipeline = pipeline(
+        model="distilbert-base-uncased-finetuned-sst-2-english"
+    )
     analysis = sentiment_pipeline([content])[0]
-    if (analysis.get("label") == 'POSITIVE' and analysis.get("score") > 0.6):
+    score = analysis.get("score")
+
+    if analysis.get("label") == "POSITIVE" and score > 0.6:
         sentiment = "positive"
-    elif (analysis.get("label") == 'NEGATIVE' and analysis.get("score") > 0.6):
+    elif analysis.get("label") == "NEGATIVE" and score > 0.6:
         sentiment = "negative"
+        score = -1 * score
     else:
         sentiment = "neutral"
 
     new_feedback = Feedback(
         sentiment=sentiment,
+        sentiment_score=score,
         content=content,
         initiative_id=initiative_id,
         user_id=session["user_id"],
