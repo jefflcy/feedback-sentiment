@@ -6,22 +6,45 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Add Initiative</h1>
-        <form action="/add_initiative" method="post">
-            <div class="input-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                <label for="dsc">Short description:</label>
-                <input type="text" id="dsc" name="dsc" required>
-            </div>
-            <input class="submit-btn" type="submit" value="Add">
-        </form>
 
-        <a class="a-back" href="{{ url_for('index') }}">Back to Initiatives</a>
-
-        
-          </script>
+    <div id="mySidenav" class="sidenav">
+        <img class="navLogo" src="../static/images/PSA-logo.png" />
+        <a href="{{ url_for('index')}}">Initiatives</a>
+        <a href="#">Profile</a>
+        {% if logged_in and role == "HR" %}<a href="{{ url_for('add_initiative')}}">Add Initiaive</a> {% endif %}
+        {% if logged_in %} <a href="{{ url_for('logout')}}">Logout</a> {% endif %}
     </div>
+     
+    <div class="main-body">
+        <div class="header-body">
+                <div class="header-text">
+                    <p class="header-heading">OUR INITIATIVES</p>
+                    <p>Help Shape PSA’s Future</p>
+                </div>
+                <div class="search-container">
+                    <form action="/action_page.php">
+                      <input class="searchContainer" placeholder="Search.." name="search">
+                    </form>
+                </div>
+        </div>
+      
+        <div class="container">
+            <h1>Add Initiative</h1>
+            <form action="/add_initiative" method="post">
+                <div class="input-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="dsc">Short description:</label>
+                    <input type="text" id="dsc" name="dsc" required>
+                </div>
+                <input class="submit-btn" type="submit" value="Add">
+            </form>
+
+            <a class="a-back" href="{{ url_for('index') }}">Back to Initiatives</a>
+
+            
+            </script>
+        </div>
+    </div>    
 </body>
 </html>
