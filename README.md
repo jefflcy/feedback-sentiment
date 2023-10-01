@@ -1,10 +1,10 @@
-# Feedback Tracker for Change Management Initiatives
+# SensiFeed
 
-Feedback Tracker is a web-based platform built to capture feedback on change management initiatives and use AI-powered sentiment analysis to understand the sentiment behind the feedback. It's built with Flask and SQLite for the backend, and simple HTML and CSS for the frontend.
+SensiFeed is a web-based platform built to capture feedback on change management initiatives and use AI-powered sentiment analysis to understand the sentiment behind the feedback. It's built with Flask and SQLite for the backend, and HTML and CSS for the frontend.
 
 ## Features
 
-- **Feedback Collection**: Users can easily submit feedback through a textarea on the main page.
+- **Feedback Collection**: Users can easily submit feedback through a form on the main page.
 - **Sentiment Analysis**: Leveraging AI, the system analyzes and categorizes feedback sentiment as positive, neutral, or negative.
 - **Feedback Display**: All feedback, along with its derived sentiment, is displayed below the submission box in a simple list format.
 
@@ -37,7 +37,7 @@ Ensure you have the following installed:
 3. **Install the Dependencies**:
 
    ```bash
-   pip install Flask Flask_SQLAlchemy textblob
+   pip install -r requirements.txt
    ```
 
 4. **Initialize the Database**:
@@ -57,10 +57,6 @@ python app.py
 ```
 
 This will start the Flask server, and the application should be accessible at `http://127.0.0.1:5000/`.
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
 
