@@ -1,27 +1,56 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Login</title>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap">
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    </head>
-<body>
-  <div class="center">
-    <h1>Login</h1>
-    <form id="loginForm" action="{{ url_for('login') }}" method="post">
-      <div class="input-group">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+
+    <div id="mySidenav" class="sidenav">
+      <img class="navLogo" src="../static/images/PSA-logo.png" />
+      <a href="{{ url_for('index')}}">Initiatives</a>
+      <a href="#">Profile</a>
+      {% if logged_in and role == "HR" %}<a
+        href="{{ url_for('add_initiative')}}">Add Initiaive</a> {% endif %}
+      {% if logged_in %} <a href="{{ url_for('logout')}}">Logout</a> {% endif %}
+    </div>
+
+    <div class="main-body">
+      <div class="header-body">
+        <div class="header-text">
+          <p class="header-heading">OUR INITIATIVES</p>
+          <p>Help Shape PSA’s Future</p>
+        </div>
+        <div class="search-container">
+          <form action="/action_page.php">
+            <input class="searchContainer" placeholder="Search.." name="search">
+          </form>
+        </div>
       </div>
-      <div class="input-group">
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
+
+      <div class="cardList">
+        <div class="center">
+          <h1>Login</h1>
+          <form id="loginForm" action="{{ url_for('login') }}" method="post">
+            <div class="input-group">
+              <label for="username">Username:</label>
+              <input type="text" name="username" id="username" required>
+            </div>
+            <div class="input-group">
+              <label for="password">Password:</label>
+              <input type="password" name="password" id="password" required>
+            </div>
+            <button class="submit-btn" type="submit">Login</button>
+          </form>
+
+          {% if error %}
+          <div style="color: red;">{{ error }}</div>
+          {% endif %}
+
+        </div>
       </div>
-      <button class="submit-btn" type="submit">Login</button>
-    </form>
-    {% if error %}
-      <div style="color: red;">{{ error }}</div>
-    {% endif %}
-  </div>
-</body>
+    </div>
+  </body>
 </html>

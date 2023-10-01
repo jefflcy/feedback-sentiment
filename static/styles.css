@@ -101,6 +101,21 @@ a {
   box-sizing: border-box;
 }
 
+/*
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  box-sizing: border-box;
+}
+*/
+
 input[type="text"],
 input[type="password"],
 .submit-btn {
