@@ -8,7 +8,18 @@
 
     </head>
     
+
+    
     <body>
+
+        {% if role == "Employee" %}
+
+            <!-- FEEDBACK CARD -->
+
+        {% endif %}
+
+        {% if role == "HR" %}
+
         <div class="container">
             <h1>Feedback for <span class="initiative-name">{{ initiative.name }}</span></h1>
 
@@ -31,6 +42,9 @@
 
             <br>
 
+            {% endif %}
+
+            
             <a class="a-back" href="{{ url_for('index') }}">Back to Initiatives</a>
 
     
