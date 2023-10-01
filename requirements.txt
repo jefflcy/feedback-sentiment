@@ -5,3 +5,4 @@ tensorflow
 torch
 transformers==4.33.3
 wordcloud==1.9.2
+pychart.js==0.3.0
