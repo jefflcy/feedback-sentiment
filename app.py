@@ -167,7 +167,7 @@ def feedback_page(initiative_id):
         "feedback_page.html",
         feedbacks=feedbacks,
         initiative=initiative,
-        user_role=session["role"],
+        role=session["role"],
     )
 
 
