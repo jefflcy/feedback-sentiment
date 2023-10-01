@@ -24,7 +24,8 @@ db = SQLAlchemy(app)
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(500), nullable=False)
-    sentiment = db.Column(db.String(50), nullable=True)
+    sentiment = db.Column(db.String(50), nullable=False)
+    sentiment_score = db.Column(db.Float, nullable=False)
     initiative_id = db.Column(
         db.Integer, db.ForeignKey("initiative.id"), nullable=False
     )
@@ -159,11 +160,11 @@ def add_initiative():
         return redirect(url_for("index"))
     return render_template("add_initiative.html")
 
-sentiment_counts = {
-    "Positive": 20,
-    "Neutral": 10,
-    "Negative": 5,
-}
+
+"""
+
+CHART IMPLEMENTATION
+
 
 class SentimentPieChart(BaseChart):
     type = ChartType.Pie
@@ -177,37 +178,38 @@ class SentimentPieChart(BaseChart):
         data = list(self.sentiment_counts.values())
         return [
             {
-                'data': data,
-                'backgroundColor': [Color(75, 192, 192), Color(255, 205, 86), Color(255, 99, 132)],
+                "data": data,
+                "backgroundColor": [
+                    Color(75, 192, 192),
+                    Color(255, 205, 86),
+                    Color(255, 99, 132),
+                ],
             },
         ]
-    
+
     def get_labels(self, **kwargs):
         return list(self.sentiment_counts.keys())
 
     def get_options(self, **kwargs):
-        return Options(title={
-            'display': True,
-            'text': self.title,
-        })
+        return Options(
+            title={
+                "display": True,
+                "text": self.title,
+            }
+        )
+"""
 
-    def get_html(self, **kwargs):
-        return super().get_html()
 
 @app.route("/initiative/<int:initiative_id>")
 @login_required
 def feedback_page(initiative_id):
     initiative = Initiative.query.get_or_404(initiative_id)
     feedbacks = Feedback.query.filter_by(initiative_id=initiative.id).all()
-    title = 'Engineering'
-    pie_chart = SentimentPieChart(sentiment_counts, title)
-    chart_html =pie_chart.get_html()
     return render_template(
         "feedback_page.html",
         feedbacks=feedbacks,
         initiative=initiative,
         role=session["role"],
-        chart_html=chart_html,
     )
 
 
@@ -217,17 +219,23 @@ def submit_feedback(initiative_id):
     content = request.form.get("content")
 
     # Analyze the sentiment using TextBlob
-    sentiment_pipeline = pipeline(model="distilbert-base-uncased-finetuned-sst-2-english")
+    sentiment_pipeline = pipeline(
+        model="distilbert-base-uncased-finetuned-sst-2-english"
+    )
     analysis = sentiment_pipeline([content])[0]
-    if (analysis.get("label") == 'POSITIVE' and analysis.get("score") > 0.6):
+    score = analysis.get("score")
+
+    if analysis.get("label") == "POSITIVE" and score > 0.6:
         sentiment = "positive"
-    elif (analysis.get("label") == 'NEGATIVE' and analysis.get("score") > 0.6):
+    elif analysis.get("label") == "NEGATIVE" and score > 0.6:
         sentiment = "negative"
+        score = -1 * score
     else:
         sentiment = "neutral"
 
     new_feedback = Feedback(
         sentiment=sentiment,
+        sentiment_score=score,
         content=content,
         initiative_id=initiative_id,
         user_id=session["user_id"],
