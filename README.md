@@ -48,6 +48,12 @@ Ensure you have the following installed:
 
 ### Running the Application
 
+Remember to remove
+
+```bash
+db.drop_all()  # remember to remove when prod (line 254 in app.py)
+```
+
 Once set up, you can run the application using:
 
 ```bash
@@ -55,6 +61,18 @@ python app.py
 ```
 
 This will start the Flask server, and the application should be accessible at `http://127.0.0.1:5000/`.
+
+Sample Account Login for testing:
+
+```bash
+// HR
+user: "hr"
+pass: "123456"
+
+// Employee
+user: "employee"
+pass: "123456"
+```
 
 ## License
 
