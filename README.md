@@ -1,6 +1,6 @@
-# SensiFeed
+# iFeel
 
-SensiFeed is a web-based platform built to capture feedback on change management initiatives and use AI-powered sentiment analysis to understand the sentiment behind the feedback. It's built with Flask and SQLite for the backend, and HTML and CSS for the frontend.
+iFeel is a web-based platform built to capture feedback on change management initiatives and use AI-powered sentiment analysis to understand the sentiment behind the feedback. It's built with Flask and SQLite for the backend, and HTML and CSS for the frontend.
 
 ## Features
 
@@ -15,8 +15,6 @@ SensiFeed is a web-based platform built to capture feedback on change management
 Ensure you have the following installed:
 
 - Python 3.7+
-- Flask
-- Flask_SQLAlchemy
 
 ### Installation
 
